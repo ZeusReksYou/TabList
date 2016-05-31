@@ -1,0 +1,78 @@
+package mcplugin.ZeusReksYou_.TablList
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
+import org.bukkit.scoreboard.Team;
+
+public class TablistPrefixes extends JavaPlugin implements Listener
+{
+	
+	ScoreboardManager sco;
+	Scoreboard sb;
+	Team OWNER;
+	Team ADMIN;
+	Team MOD;
+	Team DEVELOPER;
+	Team SRMOD;
+	Team BUILDER;
+	Team USER;
+	
+	@Override
+	public void onEnable() {
+		getLogger().info("Plugin activated properly, enjoy!");
+		getServer().getPluginManager().registerEvents(this, this);
+		sco = Bukkit.getScoreboardManager();
+		sb = sco.getMainScoreboard();
+		OWNER = sb.registerNewTeam("OWNER");
+		ADMIN = sb.registerNewTeam("ADMIN");
+		MOD = sb.registerNewTeam("MOD");
+		DEVELOPER = sb.registerNewTeam("DEVELOPER");
+		SRMOD = sb.registerNewTeam("SRMOD");
+		BUILDER = sb.registerNewTeam("BUILDER");
+		USER = sb.registerNewTeam("USER");
+		
+	setPrefix();
+				
+	}
+    
+	public void setPrefix(){
+		OWNER.setPrefix("§c§lOWNER §f");
+		ADMIN.setPrefix("§6§lADMIN §f");
+		MOD.setPrefix("§e§lMOD §f");
+		DEVELOPER.setPrefix("§3§l§nDEV");
+		SRMOD.setPrefix("§b§lSr.MOD");
+		BUILDER.setPrefix("§6§lUILDER");
+		USER.setPrefix("§8");
+	}
+	
+	@Override
+	public void onDisable() {
+		getLogger().info("Disabled");
+	}
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event){
+		Player player = event.getPlayer();
+		player.setScoreboard(sb);
+		if (player.hasPermission("prefix.owner")){
+		OWNER.addPlayer(player);
+		} else if (player.hasPermission("prefix.admin")){
+			ADMIN.addPlayer(player);
+		} else if (player.hasPermission("prefix.mod")){
+			MOD.addPlayer(player);
+		} else if (player.hasPermission("prefix.developer")){
+			DEVELOPER.addPlayer(player);
+		} else if (player.hasPermission("prefix.srmod")){
+			SRMOD.addPlayer(player);
+		} else if (player.hasPermission("prefix.builder")){
+			BUILDER.addPlayer(player);
+		} else {
+			USER.addPlayer(player);
+		}
+	}
+}
